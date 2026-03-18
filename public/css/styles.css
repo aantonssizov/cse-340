@@ -73,14 +73,14 @@ nav ul li a {
   color: white;
 }
 
-main {
+.home-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr 1fr;
   gap: 8px;
 }
 
-main > h1 {
+.home-container > h1 {
   grid-column: 1/3;
   grid-row: 1;
 }
@@ -159,6 +159,32 @@ section.reviews {
   grid-row: 3;
 }
 
+ul#inv-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+ul#inv-display li {
+  list-style-type: none;
+  border: var(--lake) solid 2px;
+  border-radius: 3px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+ul#inv-display li > a {
+  align-self: center;
+}
+
+ul#inv-display .namePrice h2 > a {
+  text-decoration: none;
+  color: var(--carbon-black);
+}
+
 @media screen and (max-width: 500px) {
   body {
     background-image: none;
@@ -169,7 +195,7 @@ section.reviews {
     border: none;
   }
 
-  main {
+  .home-container {
     display: flex;
     flex-direction: column;
   }
@@ -182,5 +208,9 @@ section.reviews {
 
   .hero-container .hero-box {
     grid-column: 1;
+  }
+
+  ul#inv-display {
+    grid-template-columns: 1fr;
   }
 }
