@@ -185,6 +185,20 @@ ul#inv-display .namePrice h2 > a {
   color: var(--carbon-black);
 }
 
+.inv-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.inv-detail-container > .img-container {
+  align-self: center;
+}
+
+.inv-detail-container > .img-container > img {
+  width: 100%;
+  height: auto;
+}
+
 @media screen and (max-width: 500px) {
   body {
     background-image: none;
@@ -211,6 +225,10 @@ ul#inv-display .namePrice h2 > a {
   }
 
   ul#inv-display {
+    grid-template-columns: 1fr;
+  }
+
+  .inv-detail-container {
     grid-template-columns: 1fr;
   }
 }
