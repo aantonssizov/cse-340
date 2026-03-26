@@ -19,4 +19,12 @@ router.post(
   utilities.handleErrors(accountController.signupAccount),
 );
 
+// Process the login attempt
+router.post(
+  "/login",
+  signupValidate.loginRules(),
+  signupValidate.checkLoginData,
+  utilities.handleErrors(accountController.loginAccount),
+);
+
 module.exports = router;

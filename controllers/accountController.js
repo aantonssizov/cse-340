@@ -1,5 +1,6 @@
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
+const bcrypt = require("bcryptjs");
 const accountController = {};
 
 /* ****************************************
@@ -37,11 +38,25 @@ accountController.signupAccount = async function (req, res) {
     account_email,
     account_password,
   } = req.body;
+
+  let hashedPassword;
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = bcrypt.hashSync(account_password);
+  } catch (error) {
+    req.flash("notice", "Sorry, there was an error processing the signup.");
+    res.status(500).render("account/signup", {
+      title: "Signup",
+      nav,
+      errors: null,
+    });
+  }
+
   const signupResult = await accountModel.signupAccount(
     account_firstname,
     account_lastname,
     account_email,
-    account_password,
+    hashedPassword,
   );
 
   if (signupResult) {
@@ -58,6 +73,32 @@ accountController.signupAccount = async function (req, res) {
     req.flash("notice", "Sorry, the registratioin failed.");
     res.status(501).render("account/signup", {
       title: "Signup",
+      nav,
+    });
+  }
+};
+
+/* ****************************************
+ *  Process Login
+ * *************************************** */
+accountController.loginAccount = async function (req, res) {
+  const nav = await utilities.getNav();
+  const { account_email, account_password } = req.body;
+  const loginResult = await accountModel.loginAccount(
+    account_email,
+    account_password,
+  );
+
+  if (loginResult) {
+    req.flash(
+      "notice",
+      `Congratulations, you're logged in ${loginResult.rows[0]?.account_firstname ?? account_email}.`,
+    );
+    res.redirect(303, "/");
+  } else {
+    req.flash("notice", "Sorry, the login failed.");
+    res.status(501).render("account/login", {
+      title: "Login",
       nav,
     });
   }
