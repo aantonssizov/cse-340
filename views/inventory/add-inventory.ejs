@@ -1,0 +1,86 @@
+<%- include("../partials/base-form-top") %>
+
+<form
+  action="/inv/add-inventory"
+  method="post"
+  class="base-form add-inventory-form"
+>
+  <label for="invMake">Make:</label>
+  <input
+    type="text"
+    name="inv_make"
+    id="invMake"
+    required
+    value="<%= locals.inv_make %>"
+  />
+  <label for="invModel">Model:</label>
+  <input
+    type="text"
+    name="inv_model"
+    id="invModel"
+    required
+    value="<%= locals.inv_model %>"
+  />
+  <label for="invYear">Year:</label>
+  <input
+    type="number"
+    min="1900"
+    max="2099"
+    name="inv_year"
+    id="invYear"
+    required
+    value="<%= locals.inv_year %>"
+  />
+  <label for="invDescription">Description:</label>
+  <textarea
+    name="inv_description"
+    id="invDescription"
+    required
+    value="<%= locals.inv_description %>"
+  ></textarea>
+  <label for="invImage">Image:</label>
+  <input
+    type="text"
+    name="inv_image"
+    id="invImage"
+    required
+    value="<%= locals.inv_image %>"
+  />
+  <label for="invThumbnail">Thumbnail:</label>
+  <input
+    type="text"
+    name="inv_thumbnail"
+    id="invThumbnail"
+    required
+    value="<%= locals.inv_thumbnail %>"
+  />
+  <label for="invPrice">Price:</label>
+  <input
+    type="number"
+    name="inv_price"
+    id="invPrice"
+    required
+    min="0"
+    value="<%= locals.inv_price %>"
+  />
+  <label for="invMiles">Miles:</label>
+  <input
+    type="number"
+    name="inv_miles"
+    id="invMiles"
+    required
+    min="0"
+    value="<%= locals.inv_miles %>"
+  />
+  <label for="invColor">Color:</label>
+  <input
+    type="text"
+    name="inv_color"
+    id="invColor"
+    required
+    value="<%= locals.inv_color %>"
+  />
+  <label for="classificationList">Classification:</label>
+  <%- classificationList %>
+  <button type="submit">Add</button>
+</form>

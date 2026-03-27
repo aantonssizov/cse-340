@@ -204,8 +204,7 @@ ul#inv-display .namePrice h2 > a {
   height: auto;
 }
 
-form.login-form,
-form.signup-form {
+form.base-form {
   padding: 8px;
   border: 1px solid var(--carbon-black);
   border-radius: 5px;
@@ -214,20 +213,19 @@ form.signup-form {
   gap: 8px;
 }
 
-form.login-form label,
-form.signup-form label {
+form.base-form label {
   color: var(--carbon-black);
   font-size: 1.12em;
 }
 
-form.login-form input,
-form.signup-form input {
+form.base-form input,
+form.base-form select,
+form.base-form textarea {
   padding: 8px;
   align-self: stretch;
 }
 
-form.login-form > button[type="submit"],
-form.signup-form > button[type="submit"] {
+form.base-form > button[type="submit"] {
   align-self: center;
   border: 1px solid var(--carbon-black);
   padding: 8px;

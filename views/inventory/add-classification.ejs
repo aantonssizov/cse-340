@@ -1,0 +1,19 @@
+<%- include("../partials/base-form-top") %>
+
+<form
+  action="/inv/add-classification"
+  method="post"
+  class="base-form add-classification-form"
+>
+  <label for="classificationName">Name:</label>
+  <p>It can't contain a space or special character of any kind.</p>
+  <input
+    type="text"
+    name="classification_name"
+    id="classificationName"
+    required
+    pattern="^[a-zA-Z]+$"
+    value="<%= locals.classification_name %>"
+  />
+  <button type="submit">Add</button>
+</form>
