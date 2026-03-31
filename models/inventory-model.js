@@ -15,7 +15,8 @@ async function getClassifications() {
 async function getClassification(classification_id) {
   try {
     const sql = "SELECT * FROM classification WHERE classification_id = $1";
-    return await pool.query(sql, [classification_id]).rows[0];
+    const result = await pool.query(sql, [classification_id]);
+    return result.rows[0];
   } catch (error) {
     return error.message;
   }
@@ -111,7 +112,45 @@ async function addInventory(
       classification_id,
     ]);
   } catch (error) {
-    return error.message;
+    throw new Error(error.message);
+  }
+}
+
+/* ***************************
+ *  Edit Inventory
+ * ************************** */
+async function editInventory(
+  inv_id,
+  inv_make,
+  inv_model,
+  inv_year,
+  inv_description,
+  inv_image,
+  inv_thumbnail,
+  inv_price,
+  inv_miles,
+  inv_color,
+  classification_id,
+) {
+  try {
+    const sql =
+      "UPDATE public.inventory SET inv_make = $1, inv_model = $2, inv_description = $3, inv_image = $4, inv_thumbnail = $5, inv_price = $6, inv_year = $7, inv_miles = $8, inv_color = $9, classification_id = $10 WHERE inv_id = $11 RETURNING *";
+    const result = await pool.query(sql, [
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classification_id,
+      inv_id,
+    ]);
+    return result.rows[0];
+  } catch (error) {
+    throw new Error(error.message);
   }
 }
 
@@ -123,4 +162,5 @@ module.exports = {
   getInventoryByClassificationId,
   getInventoryById,
   addInventory,
+  editInventory,
 };

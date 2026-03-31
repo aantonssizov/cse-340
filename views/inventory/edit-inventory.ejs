@@ -1,10 +1,6 @@
 <%- include("../partials/base-form-top") %>
 
-<form
-  action="/inv/add-inventory"
-  method="post"
-  class="base-form add-inventory-form"
->
+<form action="/inv/edit" method="post" class="base-form edit-inventory-form">
   <label for="invMake">Make:</label>
   <input
     type="text"
@@ -79,5 +75,8 @@
   />
   <label for="classificationList">Classification:</label>
   <%- classificationList %>
-  <button type="submit">Add</button>
+  <input type="hidden" name="inv_id" <% if (locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+  <button type="submit" disabled>Edit</button>
 </form>
+
+<script src="../../js/inv-edit.js"></script>

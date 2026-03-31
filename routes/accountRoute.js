@@ -5,6 +5,13 @@ const accountController = require("../controllers/accountController");
 const utilities = require("../utilities/");
 const signupValidate = require("../utilities/account-validation");
 
+// Route to build account view
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildAccount),
+);
+
 // Route to build login view
 router.get("/login/", utilities.handleErrors(accountController.buildLogin));
 
