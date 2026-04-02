@@ -127,6 +127,34 @@ invCont.editInventory = async function (req, res, next) {
 };
 
 /* ***************************
+ *  Process Delete Inventory
+ * ************************** */
+invCont.deleteInventory = async function (req, res, next) {
+  const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
+  const deleteInventoryResult = await invModel.deleteInventory(inv_id);
+  if (deleteInventoryResult) {
+    req.flash(
+      "notice",
+      `The inventory ${inv_make} ${inv_model} was successfully deleted`,
+    );
+    res.redirect("/inv/");
+  } else {
+    const nav = await utilities.getNav();
+    req.flash("notice", "Sorry, deleting inventory failed.");
+    res.status(501).render("inventory/delete-confirm", {
+      title: `Delete ${inv_make} ${inv_model}`,
+      nav,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
+    });
+  }
+};
+
+/* ***************************
  *  Process Add Inventory
  * ************************** */
 invCont.addInventory = async function (req, res, next) {
@@ -227,7 +255,7 @@ invCont.getInventoryJSON = async (req, res, next) => {
 };
 
 /* ***************************
- *  Builld edit intory view
+ *  Builld edit inventory view
  * ************************** */
 invCont.buildEditInventory = async (req, res, next) => {
   const nav = await utilities.getNav();
@@ -253,6 +281,26 @@ invCont.buildEditInventory = async (req, res, next) => {
     inv_miles: inventory.inv_miles,
     inv_color: inventory.inv_color,
     classification_id: inventory.classification_id,
+  });
+};
+
+/* ***************************
+ *  Builld delete inventory view
+ * ************************** */
+invCont.buildDeleteInventory = async (req, res, next) => {
+  const nav = await utilities.getNav();
+  const inv_id = parseInt(req.params.inv_id);
+  const inventory = await invModel.getInventoryById(inv_id);
+  let name = `${inventory.inv_make} ${inventory.inv_model}`;
+  res.render("inventory/delete-confirm", {
+    title: "Delete " + name,
+    nav,
+    errors: null,
+    inv_id: inventory.inv_id,
+    inv_make: inventory.inv_make,
+    inv_model: inventory.inv_model,
+    inv_year: inventory.inv_year,
+    inv_price: inventory.inv_price,
   });
 };
 

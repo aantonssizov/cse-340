@@ -1,0 +1,46 @@
+<%- include("../partials/base-form-top") %>
+
+<form action="/inv/delete" method="post" class="base-form delete-inventory-form">
+  <label for="invMake">Make:</label>
+  <input
+    type="text"
+    name="inv_make"
+    id="invMake"
+    required
+    readonly
+    value="<%= locals.inv_make %>"
+  />
+  <label for="invModel">Model:</label>
+  <input
+    type="text"
+    name="inv_model"
+    id="invModel"
+    required
+    readonly
+    value="<%= locals.inv_model %>"
+  />
+  <label for="invYear">Year:</label>
+  <input
+    type="number"
+    min="1900"
+    max="2099"
+    name="inv_year"
+    id="invYear"
+    required
+    readonly
+    value="<%= locals.inv_year %>"
+  />
+  <label for="invPrice">Price:</label>
+  <input
+    type="number"
+    name="inv_price"
+    id="invPrice"
+    required
+    min="0"
+    readonly
+    value="<%= locals.inv_price %>"
+  />
+  <input type="hidden" name="inv_id" <% if (locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+  <p>Confirm Deletion - The delete is permanent.</p>
+  <button type="submit">Delete</button>
+</form>
