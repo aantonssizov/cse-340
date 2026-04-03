@@ -177,4 +177,15 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+Util.checkAccountType =
+  (...acountTypes) =>
+  (req, res, next) => {
+    if (res.locals.accountData.account_type in acountTypes) {
+      next();
+    } else {
+      req.flash("notice", "Please log in.");
+      return res.redirect("/account/login");
+    }
+  };
+
 module.exports = Util;

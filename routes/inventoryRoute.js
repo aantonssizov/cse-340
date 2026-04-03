@@ -6,17 +6,26 @@ const utilities = require("../utilities/");
 const inventoryValidation = require("../utilities/inventory-validation");
 
 // Route to build management view
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
+  utilities.handleErrors(invController.buildManagement),
+);
 
 // Route to build add classification view
 router.get(
   "/add-classification",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   utilities.handleErrors(invController.buildAddClassification),
 );
 
 // Route to add new classification
 router.post(
   "/add-classification",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   inventoryValidation.addClassificationRules(),
   inventoryValidation.checkAddClassificationData,
   utilities.handleErrors(invController.addClassification),
@@ -25,12 +34,16 @@ router.post(
 // Route to build add inventory view
 router.get(
   "/add-inventory",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   utilities.handleErrors(invController.buildAddInventory),
 );
 
 // Route to add new inventory
 router.post(
   "/add-inventory",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   inventoryValidation.addInventoryRules(),
   inventoryValidation.checkAddInventoryData,
   utilities.handleErrors(invController.addInventory),
@@ -57,12 +70,16 @@ router.get(
 // Route to build edit inventory view
 router.get(
   "/edit/:inv_id",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   utilities.handleErrors(invController.buildEditInventory),
 );
 
 // Route to edit an inventory
 router.post(
   "/edit/",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   inventoryValidation.addInventoryRules(),
   inventoryValidation.checkEditInventoryData,
   utilities.handleErrors(invController.editInventory),
@@ -71,10 +88,17 @@ router.post(
 // Route to build delete an inventory view
 router.get(
   "/delete/:inv_id",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
   utilities.handleErrors(invController.buildDeleteInventory),
 );
 
 // Route to delete an inventory
-router.post("/delete/", utilities.handleErrors(invController.deleteInventory));
+router.post(
+  "/delete/",
+  utilities.checkLogin,
+  utilities.checkAccountType("Employee", "Admin"),
+  utilities.handleErrors(invController.deleteInventory),
+);
 
 module.exports = router;

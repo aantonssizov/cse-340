@@ -206,6 +206,7 @@ ul#inv-display .namePrice h2 > a {
 
 form.base-form {
   padding: 8px;
+  margin: 8px;
   border: 1px solid var(--carbon-black);
   border-radius: 5px;
   display: flex;
