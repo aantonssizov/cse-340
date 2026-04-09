@@ -177,10 +177,13 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+/* ****************************************
+ *  Check Account Type
+ * ************************************ */
 Util.checkAccountType =
-  (...acountTypes) =>
+  (...accountTypes) =>
   (req, res, next) => {
-    if (res.locals.accountData.account_type in acountTypes) {
+    if (accountTypes.includes(res.locals.accountData.account_type)) {
       next();
     } else {
       req.flash("notice", "Please log in.");

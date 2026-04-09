@@ -169,6 +169,7 @@ accountController.buildUpdate = async function (req, res, next) {
     account_lastname: account.account_lastname,
     account_email: account.account_email,
     account_id: account.account_id,
+    account_type: account.account_type,
   });
 };
 
@@ -191,25 +192,32 @@ accountController.update = async function (req, res) {
       "notice",
       `Congratulations, you're updated ${account_firstname}.`,
     );
-    const accountData = updateResult.rows[0];
-    delete accountData.account_password;
-    const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: 3600 * 1000,
-    });
-    if (process.env.NODE_ENV === "development") {
-      res.cookie("jwt", accessToken, {
-        httpOnly: true,
-        maxAge: 3600 * 1000,
-      });
-    } else {
-      res.cookie("jwt", accessToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 3600 * 1000,
-      });
+    if (res.locals.accountData.account_id === account_id) {
+      const accountData = updateResult.rows[0];
+      delete accountData.account_password;
+      const accessToken = jwt.sign(
+        accountData,
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: 3600 * 1000,
+        },
+      );
+      if (process.env.NODE_ENV === "development") {
+        res.cookie("jwt", accessToken, {
+          httpOnly: true,
+          maxAge: 3600 * 1000,
+        });
+      } else {
+        res.cookie("jwt", accessToken, {
+          httpOnly: true,
+          secure: true,
+          maxAge: 3600 * 1000,
+        });
+      }
     }
     res.redirect("/account/");
   } else {
+    const account = await accountModel.getAccount(account_id);
     req.flash("notice", "Sorry, the updating failed.");
     res.status(501).render("account/update", {
       title: `Update ${account_firstname}`,
@@ -219,6 +227,60 @@ accountController.update = async function (req, res) {
       account_lastname,
       account_email,
       account_id,
+      account_type: account.account_type,
+    });
+  }
+};
+
+/* ****************************************
+ *  Process Change Type
+ * *************************************** */
+accountController.changeType = async function (req, res) {
+  const nav = await utilities.getNav();
+  const { account_type, account_id } = req.body;
+  const updateResult = await accountModel.changeType(account_id, account_type);
+
+  if (updateResult) {
+    req.flash(
+      "notice",
+      `Congratulations, you're changed the account type of ${updateResult.rows[0].account_firstname}.`,
+    );
+    if (res.locals.accountData.account_id === account_id) {
+      const accountData = updateResult.rows[0];
+      delete accountData.account_password;
+      const accessToken = jwt.sign(
+        accountData,
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: 3600 * 1000,
+        },
+      );
+      if (process.env.NODE_ENV === "development") {
+        res.cookie("jwt", accessToken, {
+          httpOnly: true,
+          maxAge: 3600 * 1000,
+        });
+      } else {
+        res.cookie("jwt", accessToken, {
+          httpOnly: true,
+          secure: true,
+          maxAge: 3600 * 1000,
+        });
+      }
+    }
+    res.redirect("/account/");
+  } else {
+    const account = await accountModel.getAccount(account_id);
+    req.flash("notice", "Sorry, the change of type failed.");
+    res.status(501).render("account/update", {
+      title: `Update ${account.account_firstname}`,
+      nav,
+      errors: null,
+      account_firstname: account.account_firstname,
+      account_lastname: account.account_lastname,
+      account_email: account.account_email,
+      account_id,
+      account_type,
     });
   }
 };
@@ -250,12 +312,22 @@ accountController.changePassword = async function (req, res) {
   if (updateResult) {
     req.flash(
       "notice",
-      `Congratulations, you're updated ${res.locals.accountData.account_firstname}.`,
+      `Congratulations, you're updated ${updateResult.rows[0].account_firstname}.`,
     );
     res.redirect("/account/");
   } else {
     req.flash("notice", "Sorry, the change of password failed.");
     res.redirect(`/account/update/${account_id}`);
+  }
+};
+
+accountController.searchJSON = async function (req, res) {
+  const { account_email } = req.params;
+  const account = await accountModel.getAccountByEmail(account_email);
+  if (account) {
+    res.json({ account_id: account.account_id });
+  } else {
+    res.json("No matching account found.");
   }
 };
 

@@ -1,9 +1,20 @@
 <%- include("../partials/base-heading.ejs"); %>
 
-<h2>Welcome <%= locals.accountData.account_firstname%></h2>
-<p><a href="/account/update/<%=locals.accountData.account_id%>">Update Account</a></p>
-<%if (locals.accountData.account_type === "Employee" || locals.accountData.account_type === "Admin") { %>
-<h3>Inventory Management</h3>
-<p><a href="/inv/">Access</a></p> <%}%>
+    <h2>Welcome <%= locals.accountData.account_firstname%>
+    </h2>
+    <p><a href="/account/update/<%=locals.accountData.account_id%>">Update Account</a></p>
+    <%if (locals.accountData.account_type==="Employee" || locals.accountData.account_type==="Admin" ) { %>
+        <h3>Inventory Management</h3>
+        <p><a href="/inv/">Access</a></p>
+        <%}%>
 
-
+            <%if (locals.accountData.account_type==="Admin" ) { %>
+                <h3>Account Management</h3>
+                <div class="search-box">
+                    <label for="searchEmail">Account email:</label>
+                    <input type="email" name="account_email" id="accountEmail"
+                        placeholder="Type in the email of an account to edit">
+                    <button id="searchBtn">Edit</button>
+                </div>
+                <script src="../../js/account-search.js"></script>
+                <%}%>

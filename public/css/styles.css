@@ -241,6 +241,26 @@ form.login-form > p {
   color: var(--lake);
 }
 
+.search-box {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 8px;
+}
+
+.search-box button {
+  border: 1px solid var(--carbon-black);
+  padding: 8px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 1.12em;
+  background-color: white;
+}
+
 @media screen and (max-width: 500px) {
   body {
     background-image: none;

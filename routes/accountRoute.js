@@ -35,6 +35,24 @@ router.post(
   utilities.handleErrors(accountController.update),
 );
 
+// Route to search account by email
+router.get(
+  "/search/:account_email",
+  accountValidate.searchRules(),
+  accountValidate.checkSearchData,
+  utilities.handleErrors(accountController.searchJSON),
+);
+
+// Route to change account's type
+router.post(
+  "/change-type/",
+  utilities.checkLogin,
+  utilities.checkAccountType("Admin"),
+  accountValidate.changeTypeRules(),
+  accountValidate.checkChangeTypeData,
+  utilities.handleErrors(accountController.changeType),
+);
+
 // Route to change account's password
 router.post(
   "/change-password",

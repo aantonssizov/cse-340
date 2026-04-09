@@ -88,6 +88,19 @@ async function updateAccount(
 }
 
 /* *****************************
+ * Change type
+ * *************************** */
+async function changeType(account_id, account_type) {
+  try {
+    const sql =
+      "UPDATE public.account SET account_type = $1 WHERE account_id = $2 RETURNING *";
+    return await pool.query(sql, [account_type, account_id]);
+  } catch (error) {
+    return error.message;
+  }
+}
+
+/* *****************************
  * Change password
  * *************************** */
 async function changePassword(account_id, account_password) {
@@ -106,5 +119,6 @@ module.exports = {
   getAccountByEmail,
   getAccount,
   updateAccount,
+  changeType,
   changePassword,
 };
